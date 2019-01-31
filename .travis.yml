@@ -47,3 +47,9 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then ./configure CPPFLAGS=-fsanitize=address LDFLAGS="-fsanitize=address -fuse-ld=gold"; fi
 script:
   - make CC="ccache $CC" CXX="ccache $CXX" check
+deploy:
+  provider: releases
+  api_key: "$GH_TOKEN"
+  file: "/home/travis/build/agalwood/aria2/*"
+  skip_cleanup: true
+  draft: true
