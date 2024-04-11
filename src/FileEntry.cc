@@ -51,9 +51,9 @@
 
 namespace aria2 {
 
-bool FileEntry::RequestFaster::
-operator()(const std::shared_ptr<Request>& lhs,
-           const std::shared_ptr<Request>& rhs) const
+bool FileEntry::RequestFaster::operator()(
+    const std::shared_ptr<Request>& lhs,
+    const std::shared_ptr<Request>& rhs) const
 {
   if (!lhs->getPeerStat()) {
     return false;
@@ -89,17 +89,6 @@ FileEntry::FileEntry()
 }
 
 FileEntry::~FileEntry() = default;
-
-FileEntry& FileEntry::operator=(const FileEntry& entry)
-{
-  if (this != &entry) {
-    path_ = entry.path_;
-    length_ = entry.length_;
-    offset_ = entry.offset_;
-    requested_ = entry.requested_;
-  }
-  return *this;
-}
 
 bool FileEntry::operator<(const FileEntry& fileEntry) const
 {

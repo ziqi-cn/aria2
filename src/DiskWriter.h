@@ -62,7 +62,7 @@ public:
   virtual void closeFile() = 0;
 
   /**
-   * Opens a file.  If the file doesnot exists, an exception may be
+   * Opens a file.  If the file does not exist, an exception may be
    * thrown.
    */
   virtual void openExistingFile(int64_t totalLength = 0) = 0;
@@ -85,6 +85,9 @@ public:
 
   // Drops cache in range [offset, offset + len)
   virtual void dropCache(int64_t len, int64_t offset) {}
+
+  // Force physical write of data from OS buffer cache.
+  virtual void flushOSBuffers() {}
 };
 
 } // namespace aria2

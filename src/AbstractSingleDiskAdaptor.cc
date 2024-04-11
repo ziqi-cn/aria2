@@ -41,7 +41,7 @@
 #include "WrDiskCacheEntry.h"
 #include "LogFactory.h"
 #ifdef HAVE_SOME_FALLOCATE
-#include "FallocFileAllocationIterator.h"
+#  include "FallocFileAllocationIterator.h"
 #endif // HAVE_SOME_FALLOCATE
 
 namespace aria2 {
@@ -101,6 +101,11 @@ void AbstractSingleDiskAdaptor::writeCache(const WrDiskCacheEntry* entry)
                      static_cast<unsigned long>(d->len)));
     writeData(d->data + d->offset, d->len, d->goff);
   }
+}
+
+void AbstractSingleDiskAdaptor::flushOSBuffers()
+{
+  diskWriter_->flushOSBuffers();
 }
 
 bool AbstractSingleDiskAdaptor::fileExists()

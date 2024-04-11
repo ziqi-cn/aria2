@@ -150,10 +150,9 @@ const std::string V_ARC4("arc4");
 const std::string V_HTTP("http");
 const std::string V_HTTPS("https");
 const std::string V_FTP("ftp");
-const std::string A2_V_SSL3("SSLv3");
-const std::string A2_V_TLS10("TLSv1");
 const std::string A2_V_TLS11("TLSv1.1");
 const std::string A2_V_TLS12("TLSv1.2");
+const std::string A2_V_TLS13("TLSv1.3");
 
 PrefPtr PREF_VERSION = makePref("version");
 PrefPtr PREF_HELP = makePref("help");
@@ -430,6 +429,8 @@ PrefPtr PREF_HTTP_ACCEPT_GZIP = makePref("http-accept-gzip");
 // value: true | false
 PrefPtr PREF_CONTENT_DISPOSITION_DEFAULT_UTF8 =
     makePref("content-disposition-default-utf8");
+// value: true | false
+PrefPtr PREF_NO_WANT_DIGEST_HEADER = makePref("no-want-digest-header");
 
 /**
  * Proxy related preferences

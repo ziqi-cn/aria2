@@ -82,39 +82,39 @@
 #include "CheckIntegrityCommand.h"
 #include "ChecksumCheckIntegrityEntry.h"
 #ifdef ENABLE_BITTORRENT
-#include "bittorrent_helper.h"
-#include "BtRegistry.h"
-#include "BtCheckIntegrityEntry.h"
-#include "DefaultPeerStorage.h"
-#include "DefaultBtAnnounce.h"
-#include "BtRuntime.h"
-#include "BtSetup.h"
-#include "BtPostDownloadHandler.h"
-#include "DHTSetup.h"
-#include "DHTRegistry.h"
-#include "DHTNode.h"
-#include "DHTRoutingTable.h"
-#include "DHTTaskQueue.h"
-#include "DHTTaskFactory.h"
-#include "DHTTokenTracker.h"
-#include "DHTMessageDispatcher.h"
-#include "DHTMessageReceiver.h"
-#include "DHTMessageFactory.h"
-#include "DHTMessageCallback.h"
-#include "BtMessageFactory.h"
-#include "BtRequestFactory.h"
-#include "BtMessageDispatcher.h"
-#include "BtMessageReceiver.h"
-#include "PeerConnection.h"
-#include "ExtensionMessageFactory.h"
-#include "DHTPeerAnnounceStorage.h"
-#include "DHTEntryPointNameResolveCommand.h"
-#include "LongestSequencePieceSelector.h"
-#include "PriorityPieceSelector.h"
-#include "bittorrent_helper.h"
+#  include "bittorrent_helper.h"
+#  include "BtRegistry.h"
+#  include "BtCheckIntegrityEntry.h"
+#  include "DefaultPeerStorage.h"
+#  include "DefaultBtAnnounce.h"
+#  include "BtRuntime.h"
+#  include "BtSetup.h"
+#  include "BtPostDownloadHandler.h"
+#  include "DHTSetup.h"
+#  include "DHTRegistry.h"
+#  include "DHTNode.h"
+#  include "DHTRoutingTable.h"
+#  include "DHTTaskQueue.h"
+#  include "DHTTaskFactory.h"
+#  include "DHTTokenTracker.h"
+#  include "DHTMessageDispatcher.h"
+#  include "DHTMessageReceiver.h"
+#  include "DHTMessageFactory.h"
+#  include "DHTMessageCallback.h"
+#  include "BtMessageFactory.h"
+#  include "BtRequestFactory.h"
+#  include "BtMessageDispatcher.h"
+#  include "BtMessageReceiver.h"
+#  include "PeerConnection.h"
+#  include "ExtensionMessageFactory.h"
+#  include "DHTPeerAnnounceStorage.h"
+#  include "DHTEntryPointNameResolveCommand.h"
+#  include "LongestSequencePieceSelector.h"
+#  include "PriorityPieceSelector.h"
+#  include "bittorrent_helper.h"
 #endif // ENABLE_BITTORRENT
 #ifdef ENABLE_METALINK
-#include "MetalinkPostDownloadHandler.h"
+#  include "MetalinkPostDownloadHandler.h"
 #endif // ENABLE_METALINK
 
 namespace aria2 {
@@ -210,7 +210,8 @@ std::pair<error_code::Value, std::string> RequestGroup::downloadResult() const
 void RequestGroup::closeFile()
 {
   if (pieceStorage_) {
-    pieceStorage_->flushWrDiskCacheEntry();
+    pieceStorage_->flushWrDiskCacheEntry(true);
+    pieceStorage_->getDiskAdaptor()->flushOSBuffers();
     pieceStorage_->getDiskAdaptor()->closeFile();
   }
 }
@@ -1290,6 +1291,10 @@ bool RequestGroup::doesUploadSpeedExceed()
 void RequestGroup::saveControlFile() const
 {
   if (saveControlFile_) {
+    if (pieceStorage_) {
+      pieceStorage_->flushWrDiskCacheEntry(false);
+      pieceStorage_->getDiskAdaptor()->flushOSBuffers();
+    }
     progressInfoFile_->save();
   }
 }

@@ -61,7 +61,7 @@
 #include "array_fun.h"
 #include "LogFactory.h"
 #ifndef HAVE_DAEMON
-#include "daemon.h"
+#  include "daemon.h"
 #endif // !HAVE_DAEMON
 
 namespace aria2 {
@@ -275,7 +275,7 @@ error_code::Value option_processing(Option& op, bool standalone,
     // we must clear eof bit and seek to the beginning of the buffer.
     cmdstream.clear();
     cmdstream.seekg(0, std::ios::beg);
-    // finaly let's parse and store command-iine options.
+    // finally let's parse and store command-line options.
     op.setParent(confOption);
     oparser->parse(op, cmdstream);
     oparser->parse(op, options);
@@ -322,12 +322,12 @@ error_code::Value option_processing(Option& op, bool standalone,
 #if defined(__GNUC__) && defined(__APPLE__)
 // daemon() is deprecated on OSX since... forever.
 // Silence the warning for good, so that -Werror becomes feasible.
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif // defined(__GNUC__) && defined(__APPLE__)
     const auto daemonized = daemon(0, 0);
 #if defined(__GNUC__) && defined(__APPLE__)
-#pragma GCC diagnostic pop
+#  pragma GCC diagnostic pop
 #endif // defined(__GNUC__) && defined(__APPLE__)
 
     if (daemonized < 0) {

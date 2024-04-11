@@ -22,9 +22,9 @@
 #include "FileEntry.h"
 #include "RpcMethodFactory.h"
 #ifdef ENABLE_BITTORRENT
-#include "BtRegistry.h"
-#include "BtRuntime.h"
-#include "bittorrent_helper.h"
+#  include "BtRegistry.h"
+#  include "BtRuntime.h"
+#  include "bittorrent_helper.h"
 #endif // ENABLE_BITTORRENT
 
 namespace aria2 {
@@ -875,7 +875,7 @@ void RpcMethodTest::testTellWaiting()
   CPPUNIT_ASSERT_EQUAL(0, res.code);
   resParams = downcast<List>(res.param);
   CPPUNIT_ASSERT_EQUAL((size_t)4, resParams->size());
-  // nagative offset and normalized offset < 0
+  // negative offset and normalized offset < 0
   req = RpcRequest(TellWaitingRpcMethod::getMethodName(), List::g());
   req.params->append(Integer::g(-5));
   req.params->append(Integer::g(100));
@@ -883,7 +883,7 @@ void RpcMethodTest::testTellWaiting()
   CPPUNIT_ASSERT_EQUAL(0, res.code);
   resParams = downcast<List>(res.param);
   CPPUNIT_ASSERT_EQUAL((size_t)0, resParams->size());
-  // nagative offset and normalized offset == 0
+  // negative offset and normalized offset == 0
   req = RpcRequest(TellWaitingRpcMethod::getMethodName(), List::g());
   req.params->append(Integer::g(-4));
   req.params->append(Integer::g(100));

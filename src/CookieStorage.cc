@@ -51,7 +51,7 @@
 #include "cookie_helper.h"
 #include "BufferedFile.h"
 #ifdef HAVE_SQLITE3
-#include "Sqlite3CookieParserImpl.h"
+#  include "Sqlite3CookieParserImpl.h"
 #endif // HAVE_SQLITE3
 
 namespace aria2 {
@@ -352,7 +352,7 @@ public:
 } // namespace
 
 namespace {
-class OrderByPathDepthDesc : public std::binary_function<Cookie, Cookie, bool> {
+class OrderByPathDepthDesc {
 public:
   bool operator()(const CookiePathDivider& lhs,
                   const CookiePathDivider& rhs) const

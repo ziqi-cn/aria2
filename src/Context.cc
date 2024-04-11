@@ -38,7 +38,7 @@
 #include <getopt.h>
 
 #ifdef HAVE_SYS_RESOURCE_H
-#include <sys/resource.h>
+#  include <sys/resource.h>
 #endif // HAVE_SYS_RESOURCE_H
 
 #include <numeric>
@@ -72,11 +72,11 @@
 #include "UriListParser.h"
 #include "message_digest_helper.h"
 #ifdef ENABLE_BITTORRENT
-#include "bittorrent_helper.h"
+#  include "bittorrent_helper.h"
 #endif // ENABLE_BITTORRENT
 #ifdef ENABLE_METALINK
-#include "metalink_helper.h"
-#include "MetalinkEntry.h"
+#  include "metalink_helper.h"
+#  include "MetalinkEntry.h"
 #endif // ENABLE_METALINK
 
 extern char* optarg;
@@ -121,18 +121,18 @@ void showFiles(const std::vector<std::string>& uris,
     printf(MSG_SHOW_FILES, (uri).c_str());
     printf("\n");
     try {
-#ifdef ENABLE_BITTORRENT
+#  ifdef ENABLE_BITTORRENT
       if (dt.guessTorrentFile(uri)) {
         showTorrentFile(uri);
       }
       else
-#endif // ENABLE_BITTORRENT
-#ifdef ENABLE_METALINK
+#  endif // ENABLE_BITTORRENT
+#  ifdef ENABLE_METALINK
           if (dt.guessMetalinkFile(uri)) {
         showMetalinkFile(uri, op);
       }
       else
-#endif // ENABLE_METALINK
+#  endif // ENABLE_METALINK
       {
         printf("%s\n\n", MSG_NOT_TORRENT_METALINK);
       }
@@ -270,23 +270,23 @@ Context::Context(bool standalone, int argc, char** argv, const KeyVals& options)
   }
   else
 #endif // ENABLE_METALINK
-      if (!op->blank(PREF_INPUT_FILE)) {
-    if (op->getAsBool(PREF_DEFERRED_INPUT)) {
-      uriListParser = openUriListParser(op->get(PREF_INPUT_FILE));
+    if (!op->blank(PREF_INPUT_FILE)) {
+      if (op->getAsBool(PREF_DEFERRED_INPUT)) {
+        uriListParser = openUriListParser(op->get(PREF_INPUT_FILE));
+      }
+      else {
+        createRequestGroupForUriList(requestGroups, op);
+      }
+#if defined(ENABLE_BITTORRENT) || defined(ENABLE_METALINK)
+    }
+    else if (op->get(PREF_SHOW_FILES) == A2_V_TRUE) {
+      showFiles(args, op);
+      return;
+#endif // ENABLE_METALINK || ENABLE_METALINK
     }
     else {
-      createRequestGroupForUriList(requestGroups, op);
+      createRequestGroupForUri(requestGroups, op, args, false, false, true);
     }
-#if defined(ENABLE_BITTORRENT) || defined(ENABLE_METALINK)
-  }
-  else if (op->get(PREF_SHOW_FILES) == A2_V_TRUE) {
-    showFiles(args, op);
-    return;
-#endif // ENABLE_METALINK || ENABLE_METALINK
-  }
-  else {
-    createRequestGroupForUri(requestGroups, op, args, false, false, true);
-  }
 
   // Remove option values which is only valid for URIs specified in
   // command-line. If they are left, because op is used as a template

@@ -37,7 +37,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #ifdef HAVE_UTIME_H
-#include <utime.h>
+#  include <utime.h>
 #endif // HAVE_UTIME_H
 #include <unistd.h>
 
@@ -242,7 +242,7 @@ bool File::mkdirs()
     }
   }
   return true;
-}
+} // namespace aria2
 
 mode_t File::mode()
 {
